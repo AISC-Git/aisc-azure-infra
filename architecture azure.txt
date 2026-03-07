@@ -1,0 +1,75 @@
+git clone https://repo/aisc-azure-infra
+git clone https://github.com/AISC-Git/aisc-azure-infra.git
+cd aisc-azure-infra
+
+Working inside Program Files can cause:
+
+Permission denied errors
+
+Terraform state failures
+
+Git push failures
+
+Node deployment issues
+
+Better to fix it now.
+
+c:\users\gopal\aisc-azure-infra
+
+mkdir infra
+mkdir infra\terraform
+mkdir infra\terraform\env
+
+
+terraform
+C:\Users\gopal\aisc-azure-infra\infra\terraform
+
+type nul > versions.tf
+type nul > providers.tf
+type nul > main.tf
+type nul > variables.tf
+
+terraform {
+  required_version = ">= 1.6.0"
+
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 3.110"
+    }
+  }
+
+provider "azurerm" {
+  features {}
+}}
+
+variable "location" {
+  type = string
+}
+
+variable "environment" {
+  type = string
+}
+
+variable "app_base_name" {
+  type = string
+}
+
+locals {
+  rg_name = "rg-${var.app_base_name}-${var.environment}"
+}
+
+resource "azurerm_resource_group" "rg" {
+  name     = local.rg_name
+  location = var.location
+}
+
+type nul > dev.tfvars
+
+location      = "eastus"
+environment   = "dev"
+app_base_name = "aiscworld"
+
+cd ..
+
+terraform init
