@@ -1,10 +1,9 @@
-name: Deploy Node App to Azure (Dev)
+name: Deploy Dev App
 
 on:
   push:
     branches:
-      - main
-  workflow_dispatch:
+      - dev
 
 jobs:
   build-and-deploy:
@@ -16,14 +15,13 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Install dependencies
-        run: |
-          cd app
-          npm install
+        working-directory: app
+        run: npm install
 
-      - name: Login to Azure
+      - name: Azure Login
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_DEV_CREDENTIALS }}
